@@ -1,0 +1,35 @@
+# Cadence Virtuoso Lock Files
+*.cdslck*
+*.cdsinfo.tag
+
+# Spectre Simulation Outputs & Logs
+*.mti
+*.pak
+*.log
+*.err
+*.out
+*.ic
+*.fc
+*.raw
+*.raw/
+*.psf
+*.psf/
+psf/
+spectre.ic
+spectre.fc
+spectre.out
+_graphical_stimuli.scs
+
+# Cadence Database Backups & Temporary Artifacts
+*.oa.v*
+.cdsinit.local
+cds.lib.user
+panic.log
+
+# OS & System Files
+.DS_Store
+Thumbs.db
+
+# Generated Image Exports (Optional: un-comment if you want to track images)
+# *.jpeg
+# *.png
