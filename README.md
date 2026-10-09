@@ -1,114 +1,128 @@
-\# Cascode Voltage Level Shifter Design (90nm CMOS)
+# Cascode Voltage Level Shifter Design using 90nm CMOS
 
+## Overview
 
+This project presents the design and simulation of a **Cascode Voltage Level Shifter** using 90nm CMOS technology in Cadence Virtuoso. The circuit translates digital signals from a low-voltage domain to a higher-voltage domain while protecting low-voltage transistors from excessive voltage stress.
 
-This repository contains the schematic design, layout implementation, and Spectre simulation setup for a \*\*Cascode Voltage Level Shifter\*\* designed in Cadence Virtuoso using the GPDK 90nm PDK (`gpdk090`).
+The design converts a **1.5V input signal into a 2.5V output signal** using a cascode transistor structure and cross-coupled PMOS pull-up network. The circuit is evaluated through schematic design, layout implementation, and Spectre transient analysis.
 
+## Objectives
 
+* Design a cascode-based CMOS voltage level shifter.
+* Enable reliable signal interfacing between different voltage domains.
+* Reduce voltage stress on low-voltage input transistors.
+* Verify the switching behavior through transient simulation.
+* Examine the schematic and physical layout of the circuit.
 
-\## Project Overview
+## Design Specifications
 
+| Parameter                     | Specification                 |
+| ----------------------------- | ----------------------------- |
+| Circuit                       | Cascode Voltage Level Shifter |
+| Technology                    | 90nm CMOS                     |
+| PDK                           | GPDK090                       |
+| Low-voltage supply (VDDL)     | 1.5V                          |
+| High-voltage supply (VDDH)    | 2.5V                          |
+| Input voltage swing           | 0V–1.5V                       |
+| Output voltage swing          | 0V–2.5V                       |
+| Test frequency                | 50 MHz                        |
+| Transient simulation duration | 100 ns                        |
+| Design and simulation tools   | Cadence Virtuoso and Spectre  |
 
+## Circuit Architecture
 
-Level shifters convert low-voltage digital signals ($VDDL$) to higher voltage domain signals ($VDDH$) without degrading switching performance or over-stressing low-voltage thin-oxide transistors. The cascode architecture provides intermediate voltage shielding for lower NMOS devices while enabling cross-coupled PMOS pull-up switching.
+The voltage level shifter consists of the following functional blocks:
 
+### 1. Low-Voltage Input Stage
 
+The input NMOS transistors receive complementary input signals, IN and IN_B, operating in the 1.5V voltage domain.
 
-\### Specifications \& Operating Parameters
+### 2. Cascode NMOS Stage
 
+The cascode transistors provide intermediate voltage shielding to help limit the voltage stress on the low-voltage input devices.
 
+### 3. Cross-Coupled PMOS Network
 
-| Parameter | Value / Unit | Description |
+The cross-coupled PMOS transistors form the pull-up network connected to the higher-voltage supply. Their switching action helps translate the input logic state into the 2.5V output domain.
 
-| :--- | :--- | :--- |
+### 4. Output Stage
 
-| \*\*Process Technology\*\* | 90nm CMOS (`gpdk090`) | Generic Process Design Kit |
+The output stage produces a level-shifted digital signal with a target voltage swing from 0V to 2.5V.
 
-| \*\*Low Supply Domain ($VDDL$)\*\* | 1.5 V | Core signal domain |
+## Repository Structure
 
-| \*\*High Supply Domain ($VDDH$)\*\* | 2.5 V | Output driving domain |
+```text
+Level_Shifter/
+├── Layout.jpeg
+├── schematic.jpeg
+├── schematic_zoomed.jpeg
+├── Test_Schematic.jpeg
+├── Transient Analysis.jpeg
+├── input.scs
+├── sch.oa
+├── sch_main.oa
+├── .gitattributes
+├── .gitignore
+├── LICENSE
+└── README.md
+```
 
-| \*\*Input Signal ($IN / IN\\\_B$)\*\* | 0 V – 1.5 V | Differential pulse input |
+## Schematic Design
 
-| \*\*Output Signal ($OUT$)\*\* | 0 V – 2.5 V | Level-shifted output |
+The circuit schematic illustrates the transistor-level implementation of the cascode voltage level shifter.
 
-| \*\*Operating Frequency\*\* | 50 MHz ($T = 20\\text{ ns}$) | Transient simulation period |
+![Circuit Schematic](schematic.jpeg)
 
+### Detailed Schematic
 
+The zoomed schematic provides a closer view of the transistor connections and sizing.
 
-\---
+![Detailed Schematic](schematic_zoomed.jpeg)
 
+## Testbench Setup
 
+The testbench applies a pulsed input signal in the 1.5V domain and uses a 2.5V supply for the high-voltage domain. The setup is used to evaluate the circuit's dynamic switching response.
 
-\## Circuit Architecture \& Transistor Sizing
+![Testbench Schematic](Test_Schematic.jpeg)
 
+## Physical Layout
 
+The layout represents the physical implementation of the voltage level shifter in the selected CMOS process.
 
-The cascode level shifter consists of four primary sections:
+![Layout View](Layout.jpeg)
 
-1\. \*\*Low-Voltage Input NMOS (`NM0`, `NM1`)\*\*: $W/L = 3.0\\,\\mu\\text{m} / 100\\text{ nm}$ (`gpdk090\_nmos1v`) driven by differential inputs $IN$ and $IN\\\_B$.
+## Simulation Results
 
-2\. \*\*Cascode NMOS Shield Transistors (`M0`, `M1`)\*\*: $W/L = 800\\text{ nm} / 280\\text{ nm}$ (`gpdk090\_nmos2v`) with gates biased to $VDDL$ to limit maximum voltage across input devices.
+Spectre transient analysis is used to examine the input and output waveforms over a 100 ns simulation interval.
 
-3\. \*\*Cross-Coupled PMOS Pull-Up Pair (`M2`, `M3`)\*\*: $W/L = 500\\text{ nm} / 500\\text{ nm}$ (`gpdk090\_pmos2v`) connected to $VDDH$ to latch the level-shifted state.
+The expected behavior is:
 
+* The input signal switches between 0V and 1.5V.
+* The output signal transitions between 0V and 2.5V.
+* The output follows the corresponding input logic state after the circuit's propagation delay.
 
+![Transient Analysis](%3CTransient%20Analysis.jpeg%3E)
 
-\---
+## Tools and Technologies
 
+* **Cadence Virtuoso** — Schematic capture and layout design.
+* **Cadence Spectre** — Circuit-level transient simulation.
+* **GPDK090** — 90nm CMOS process design kit.
+* **CMOS circuit design** — Transistor-level voltage-domain interfacing.
 
+## Applications
 
-\## Repository Structure
+Voltage level shifters are commonly used in:
 
-.
+* Multi-voltage System-on-Chip (SoC) designs.
+* Low-power digital integrated circuits.
+* Interfacing between different CMOS logic voltage domains.
+* Mixed-voltage digital systems.
 
-├── Layout.jpeg               # Custom IC layout view
+## License
 
-├── schematic.jpeg            # Level shifter schematic view
+This project is distributed under the MIT License. Refer to the `LICENSE` file for details.
 
-├── schematic\_zoomed.jpeg     # Detailed transistor sizing view
+## Author
 
-├── Test\_Schematic.jpeg       # Testbench setup view (VDDL, VDDH, pulse sources)
-
-├── Transient Analysis.jpeg   # Spectre transient waveforms
-
-├── .gitignore                # Git ignore rules for Cadence/Spectre logs
-
-├── LICENSE                   # MIT License
-
-└── README.md                 # Project documentation
-
-
-
-\---
-
-
-
-\## Simulation Results
-
-
-
-A transient analysis ($t\_{\\text{stop}} = 100\\text{ ns}$) was performed in Spectre to verify dynamic level shifting:
-
-
-
-\* \*\*Input ($IN$)\*\*: 0 V to 1.5 V pulse waveform ($t\_r = t\_f = 100\\text{ ps}$, period = $20\\text{ ns}$).
-
-\* \*\*Output ($OUT$)\*\*: Successfully shifts to full swing (0 V to 2.5 V) with clean rising and falling transitions and negligible overshoot.
-
-
-
-\---
-
-
-
-\## Prerequisites \& Setup
-
-
-
-1\. \*\*Cadence Virtuoso\*\*: IC6.1.7 or later.
-
-2\. \*\*Spectre Circuit Simulator\*\*: Integrated ADE L/XL workflow.
-
-3\. \*\*PDK\*\*: `gpdk090\_v4.6` configured in `cds.lib`.
-
+Developed as a CMOS VLSI circuit design and simulation project.
